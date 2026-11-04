@@ -1,0 +1,25 @@
+# Python 运行缓存（可随时重新生成）
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+
+# .NET 构建产物（vendor/docx-toolkit 本地构建后产生，可由 setup.sh 重建）
+bin/
+obj/
+*.user
+*.suo
+
+# 编辑器与系统文件
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# 运行期产物与临时文件
+*.log
+*.tmp
+*.bak
+*.orig
+~$*
