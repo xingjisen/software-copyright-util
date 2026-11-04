@@ -1,0 +1,9 @@
+# 统一换行符，避免 Windows 上 clone 后 shell 脚本带 CRLF 无法执行
+* text=auto
+
+*.sh    text eol=lf
+*.py    text eol=lf
+*.md    text eol=lf
+*.yaml  text eol=lf
+LICENSE text eol=lf
+NOTICE  text eol=lf

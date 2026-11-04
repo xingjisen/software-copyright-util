@@ -12,9 +12,11 @@ description: >
   user iteration, then generates matching source code (Java/Python/Vue/React/uniapp etc.)
   before continuing the normal workflow.
 user-invocable: true
+license: AGPL-3.0
 compatibility: >
-  Requires Python 3.10+ with python-docx (pip install python-docx).
-  Optional: .NET SDK 8.0+ for full OpenXML DOCX validation (run vendor/docx-toolkit/scripts/setup.sh).
+  Python 3.10+，主流程只用标准库即可运行（无任何网络请求）。
+  Recommended: python-docx (pip install python-docx) 用于更完整的 DOCX 排版，安装需访问 PyPI；未安装时自动走内置 XML 兜底。
+  Optional: .NET SDK 8.0+ 仅用于额外的 OpenXML 结构校验，需手动运行 vendor/docx-toolkit/scripts/setup.sh 并联网安装依赖，不运行则完全本地。
 allowed-tools: >
   Bash, Read, Write, Edit, Glob, Grep, WebSearch, WebFetch
 metadata:
@@ -29,6 +31,7 @@ metadata:
 这个 skill 生成可审阅、可追溯的软著申请资料。核心原则：
 
 - 固定输出目录：当前工作目录下的 `软件著作权申请资料/`。不要默认写到 `/tmp`、`/private/tmp` 或其他临时目录。
+- 文中所有 `${CLAUDE_SKILL_DIR}` 指本 skill 所在目录的绝对路径。若当前运行环境没有设置该变量，先把它解析为实际 skill 目录（例如 `~/.workbuddy/skills/software-copyright-util`）再执行命令，不要原样粘贴到 shell。
 - 只有测试 skill 自身时才允许显式指定临时目录；面向用户生成材料时必须写入当前目录。
 - 先生成 Markdown 草稿，用户确认后再生成正式 Word/TXT。
 - 正式 Word/TXT 只能写入 `软件著作权申请资料/正式资料/`，不要散落在输出目录根部。
@@ -118,7 +121,7 @@ python3 ${CLAUDE_SKILL_DIR}/scripts/check_environment.py \
 
 用户选择：
 
-- 如果用户愿意安装完整环境，按 `${CLAUDE_SKILL_DIR}/vendor/docx-toolkit/scripts/setup.sh` 的要求安装依赖，再继续。完整环境生成和校验更规范。
+- 如果用户愿意安装完整环境，按 `${CLAUDE_SKILL_DIR}/vendor/docx-toolkit/scripts/setup.sh` 的要求安装依赖，再继续。完整环境生成和校验更规范。安装前必须告知用户该脚本会联网（dot.net 下载 dotnet-install、系统包管理器安装 pandoc/LibreOffice、dotnet restore 访问 nuget.org）；用户不接受联网时直接走兜底方案。
 - 如果用户不安装，继续使用兜底方案生成 Markdown、TXT 和基础 DOCX。
 - 如果完整 DOCX 环境缺失，必须停止并等待用户选择；不得自动继续。
 

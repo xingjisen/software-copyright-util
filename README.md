@@ -3,6 +3,7 @@
 > 从真实项目源码出发，一步步生成可提交的**软件著作权申请材料**：申请表信息、程序鉴别材料（源代码前后 30 页）、文档鉴别材料（操作手册），以及配套的软件界面截图。
 
 仓库地址：<https://github.com/xingjisen/software-copyright-util>
+作者：xingjisen
 
 面向中国版权保护中心的计算机软件著作权登记场景。整个流程把"读代码 → 理解业务 → 写材料 → 排版成 Word → 实测页数"串成一条可追溯的流水线，每一步都要用户确认后才继续，不会绕过人工判断自行编造内容。
 
@@ -100,12 +101,12 @@ Windows 下即 `C:\Users\<用户名>\.workbuddy\skills\software-copyright-util\`
 
 | 依赖 | 是否必须 | 说明 |
 |---|---|---|
-| Python 3.10+ | 必须 | 运行全部流程脚本 |
-| `python-docx` | 必须 | `pip install python-docx`，生成 Word |
-| .NET SDK 8.0+ | 可选 | 完整 OpenXML 校验与预览，跑 `vendor/docx-toolkit/scripts/setup.sh` |
+| Python 3.10+ | 必须 | 运行全部流程脚本，只用标准库 |
+| `python-docx` | 建议 | `pip install python-docx`，排版更完整；缺失时自动走内置 XML 兜底 |
+| .NET SDK 8.0+ | 可选 | 额外的 OpenXML 结构校验与预览，跑 `vendor/docx-toolkit/scripts/setup.sh`（会联网） |
 | Chrome / Edge | 截图时需要 | 原型页面渲染与截图 |
 
-缺 .NET 时走兜底路径：仍能生成 Markdown、TXT 和基础 DOCX，报告中会注明当前使用兜底。
+主流程脚本不发任何网络请求。缺 `python-docx` 或缺 .NET 都能生成完整材料，报告中会注明当前使用的路径。
 
 ## 七、怎么用
 
@@ -125,7 +126,10 @@ Windows 下即 `C:\Users\<用户名>\.workbuddy\skills\software-copyright-util\`
 software-copyright-util/
 ├── SKILL.md                  技能主文档：流程、门禁、脚本用法、规则
 ├── README.md                 本文件：面向人的介绍
+├── LICENSE                   AGPL v3.0 许可证全文
+├── NOTICE                    版权声明与第三方组件说明
 ├── .gitignore                排除缓存与 .NET 构建产物
+├── .gitattributes            统一文本换行（.sh/.py 强制 LF）
 ├── agents/
 │   └── openai.yaml           技能展示名与默认提示词
 ├── references/               细则规则（主文档按需引用）
@@ -135,6 +139,7 @@ software-copyright-util/
 │   ├── copyright_material_rules.md      软著材料法定要求
 │   └── manual_structure.md              操作手册骨架
 ├── scripts/                  流程脚本
+│   ├── common.py                   公共工具（路径、IO、shell 调用）
 │   ├── check_environment.py        环境检查
 │   ├── analyze_project.py          项目分析
 │   ├── confirm_stage.py            门禁记录与断点恢复
@@ -165,7 +170,8 @@ software-copyright-util/
 
 ## 十一、来源与许可
 
-- 本项目仓库：[xingjisen/software-copyright-util](https://github.com/xingjisen/software-copyright-util)，作者 xingjisen。
-- 本 skill 基于 [Fokkyp/SoftwareCopyright-Skill](https://github.com/Fokkyp/SoftwareCopyright-Skill) 演进，感谢原作者的开源工作。
-- `vendor/docx-toolkit/` 为第三方组件，采用 MIT 许可，其 `LICENSE` 文件随目录一同保留。
+- 本项目仓库：[xingjisen/software-copyright-util](https://github.com/xingjisen/software-copyright-util)，由 xingjisen 开发并维护。
+- 本项目著作权归 xingjisen 所有，以 **GNU AGPL-3.0** 发布；完整许可证文本见仓库根目录的 `LICENSE`（AGPL v3.0 官方全文），版权声明见 `NOTICE`。
+- 如需不受 AGPL 开源义务约束的商业授权，请联系本项目作者。
+- `vendor/docx-toolkit/` 为第三方组件，采用 MIT 许可，其 `LICENSE` 文件随目录一同保留，版权与许可不受本项目著作权归属影响。
 - 使用前请自行确认所在地区软著登记的最新要求；本工具产出的是材料草稿与排版成品，**法律事实（著作权人、开发日期、发表状态等）须由申请人自行确认**。
